@@ -140,3 +140,22 @@ const lvl = 10;
 //         break;
 //     }
 // }
+
+//! Operations
+// ? Унарные
+/**
+ * +a
+ * ++a
+ * --a
+ * a++
+ * a--
+ * !a
+ * ~a
+ */
+
+// ?Бинарные
+
+// ?Тернарные
+// operand 1 ? operand 2 : operand 3
+
+console.log(2 + 2 * 2 ** 3);
