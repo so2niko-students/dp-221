@@ -7,7 +7,7 @@ const DATA = {
     images : document.querySelector('.images'),
     links : {
         search : 'https://api.artic.edu/api/v1/artworks/search?q=',
-        getImage : id => `https://www.artic.edu/iiif/2/${ id }/full/843,/0/default.jpg`,
+        getImage : id => `https://www.artic.edu/iiif/2/${ id }/full/200,/0/default.jpg`,
         details : 'https://api.artic.edu/api/v1/artworks/'
     }
 };
@@ -27,29 +27,24 @@ function loadData(val){
 }
 
 function renderData(data){
-    console.log(data);
-    DATA.output.innerHTML = data.data.map(detailsController).join('');
+    data.data.forEach(detailsController);
 }
 
 function detailsController(artwork){
-    loadDetails(artwork);
-    return getHTML(artwork);
-}
-
-function loadDetails({ id }){
-    const url = `${ DATA.links.details }${ id }`;
+    const url = `${ DATA.links.details }${ artwork.id }`;
     fetch(url)
         .then(r => r.json())
         .then(d => {
             const imageURL = DATA.links.getImage(d.data.image_id);
-            const imgHTML = `<img src="${ imageURL }">`;
-            DATA.images.insertAdjacentHTML('beforeend', imgHTML);
-        })
+            DATA.output.innerHTML += getHTML(artwork, imageURL, d);
+            console.log(d);
+        });
 }
 
-function getHTML(artwork){
+function getHTML(artwork, imageURL, d){
     return `<div class="card m-1" style="width: 18rem;">
     <div class="card-body">
+        <img src="${ imageURL }">
         <h5 class="card-title">${ artwork.title }</h5>
         <h6 class="card-subtitle mb-2 text-muted">${ artwork.id }</h6>
         <p class="card-text">${ artwork.thumbnail.alt_text }</p>
